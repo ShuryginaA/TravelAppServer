@@ -1,0 +1,40 @@
+server:
+  port: ${SPRING_SERVER_PORT:8099}
+  forward-headers-strategy: framework
+  error:
+    include-message: always
+
+spring:
+  application:
+    name: @name@
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      format_sql: true
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/traveldb}
+    username: ${DATABASE_USERNAME:server_user}
+    password: ${DATABASE_PASSWORD:server_user}
+    driver: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: db/changelog/databasechangelog.xml
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui/index.html
+
+logging:
+  level:
+    com.simbirsoft.mph.organizations: info
+    org.springframework.boot.autoconfigure.logging: error
+    liquibase.logging.core: error
+    org.springframework.web.servlet.DispatcherServlet: error
+    org.springframework.security: error
+    org.springframework: warn
+    org.hibernate: warn
+    sql: info
