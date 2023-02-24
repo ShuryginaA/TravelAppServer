@@ -5,14 +5,13 @@ server:
     include-message: always
 
 spring:
-  application:
-    name: @name@
   jpa:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: validate
       format_sql: true
+      show-sql: true
+      generate-ddl: true
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/traveldb}
     username: ${DATABASE_USERNAME:server_user}

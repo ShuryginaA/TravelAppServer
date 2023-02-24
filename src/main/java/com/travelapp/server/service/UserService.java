@@ -3,7 +3,6 @@ package com.travelapp.server.service;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
-import java.util.List;
 
 public interface UserService {
 
