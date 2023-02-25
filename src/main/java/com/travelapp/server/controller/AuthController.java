@@ -40,7 +40,7 @@ public class AuthController {
     public AuthDto authenticate (@RequestBody LoginDto loginDto) {
         if (authenticationService.isAuthenticated()){
             Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-            new AuthDto(authenticationService.getRoleFromAuth(
+            return new AuthDto(authenticationService.getRoleFromAuth(
                 authentication),
                 userService.findUserByUsername(loginDto.getUsername()).getId());
         }
@@ -50,11 +50,6 @@ public class AuthController {
         return new AuthDto(authenticationService.getRoleFromAuth(
             securityService.authenticate(loginDto)),
             userService.findUserByUsername(loginDto.getUsername()).getId());
-    }
-
-    @GetMapping("/registration")
-    public String registrationForm(Model model) {
-        return "OK";
     }
 
     @PostMapping("/registration")

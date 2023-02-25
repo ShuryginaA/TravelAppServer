@@ -15,23 +15,23 @@ import org.springframework.stereotype.Service;
 public class SecurityServiceImpl implements SecurityService {
 
 	private final static Logger logger = LoggerFactory.getLogger(SecurityService.class);
-	
+
 	@Autowired
 	AuthenticationManager authenticationManager;
-	
+
 
 	public Authentication authenticate(LoginDto loginDto) {
 
 		UsernamePasswordAuthenticationToken authRequest =
 				new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 		Authentication result = authenticationManager.authenticate(authRequest);
-		
+
 		if(result == null) {
 			return null;
 		}
 		SecurityContextHolder.getContext().setAuthentication(result);
 		return result;
-		
+
 	}
 
 }

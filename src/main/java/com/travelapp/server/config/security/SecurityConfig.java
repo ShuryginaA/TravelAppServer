@@ -29,16 +29,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-            .csrf().disable()
-            .authorizeRequests()
+        httpSecurity.
+            authorizeRequests()
             .antMatchers("/admin").hasAuthority("ADMIN")
-            .antMatchers("/api/v1/login").permitAll()
-            .antMatchers("/api/v1/register").permitAll()
-            .anyRequest()
-            .authenticated()
             .and()
-            .httpBasic();
+            .httpBasic()
+            .and()
+            .csrf().disable();
+//        httpSecurity
+//            .authorizeRequests()
+//            .antMatchers("/admin").hasAuthority("ADMIN")
+//            .anyRequest().authenticated()
+//            .and()
+//            .formLogin().loginPage("/login").permitAll();
+//        httpSecurity
+//            .csrf().disable()
+//            .authorizeRequests()
+//            .antMatchers("/admin").hasAuthority("ADMIN")
+////            .antMatchers("/api/v1/login").anonymous()
+////            .antMatchers("/api/v1/register").anonymous()
+//            .anyRequest()
+//            .authenticated()
+//            .and()
+//            .httpBasic();
     }
 
     @Bean
