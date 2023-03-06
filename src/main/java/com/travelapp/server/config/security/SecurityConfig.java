@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.
             authorizeRequests()
             .antMatchers("/admin").hasAuthority("ADMIN")
+            .antMatchers("/hello").anonymous()
             .and()
             .httpBasic()
             .and()

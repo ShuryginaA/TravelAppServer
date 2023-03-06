@@ -1,21 +1,19 @@
 package com.travelapp.server.controller;
 
 import com.travelapp.server.dto.AuthDto;
+import com.travelapp.server.dto.HelloDto;
 import com.travelapp.server.dto.LoginDto;
 import com.travelapp.server.dto.RegistrationDto;
+import com.travelapp.server.dto.RegistrationResponseDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
 import com.travelapp.server.service.AuthenticationService;
 import com.travelapp.server.service.SecurityService;
 import com.travelapp.server.service.UserService;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,9 +29,9 @@ public class AuthController {
 
     private final SecurityService securityService;
 
-    @GetMapping("/login")
-    public String login(Model model, String error, String logout) {
-        return "login";
+    @GetMapping("/hello")
+    public HelloDto hello() {
+       return new HelloDto("Hi, friend. I am server");
     }
 
     @PostMapping("/auth")
@@ -53,14 +51,14 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
-    public String processRegistration(@RequestBody RegistrationDto registrationDto)
+    public RegistrationResponseDto processRegistration(@RequestBody RegistrationDto registrationDto)
         throws AuthenticationException {
         User user = registrationDto.toUser();
         user.setRole(userService.findRoleByName(Role.RoleName.USER));
         String unhashedPassword = user.getPassword();
         userService.saveUser(user);
         authenticationService.autoLogin(user.getUsername(), unhashedPassword);
-        return "Success";
+        return new RegistrationResponseDto("Success");
 
     }
     @GetMapping("/logout")
