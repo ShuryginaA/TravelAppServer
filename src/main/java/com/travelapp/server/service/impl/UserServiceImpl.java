@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public void saveUser(User user) throws AuthenticationException {
+    public Long saveUser(User user) throws AuthenticationException {
 
         if (user.getUsername().isEmpty() ||
             user.getPassword().isEmpty()) {
@@ -45,10 +45,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("processing user: " + user.getUsername());
         if (anotherUser == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-        } else {
-            throw new AuthenticationException();
+            Long i=userRepository.save(user).getId();
+            return i;
         }
+            throw new AuthenticationException();
     }
 
     @Override

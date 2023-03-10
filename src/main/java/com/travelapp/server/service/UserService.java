@@ -6,7 +6,7 @@ import com.travelapp.server.exception.AuthenticationException;
 
 public interface UserService {
 
-    void saveUser(User user) throws AuthenticationException;
+    Long saveUser(User user) throws AuthenticationException;
 
     void updateUser(User user);
 

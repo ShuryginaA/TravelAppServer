@@ -55,10 +55,9 @@ public class AuthController {
         throws AuthenticationException {
         User user = registrationDto.toUser();
         user.setRole(userService.findRoleByName(Role.RoleName.USER));
-        String unhashedPassword = user.getPassword();
-        userService.saveUser(user);
-        authenticationService.autoLogin(user.getUsername(), unhashedPassword);
-        return new RegistrationResponseDto("Success");
+//        String unhashedPassword = user.getPassword();
+//        authenticationService.autoLogin(user.getUsername(), unhashedPassword);
+         return new RegistrationResponseDto(userService.saveUser(user));
 
     }
     @GetMapping("/logout")
