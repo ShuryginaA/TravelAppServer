@@ -12,12 +12,14 @@ import com.travelapp.server.service.AuthenticationService;
 import com.travelapp.server.service.SecurityService;
 import com.travelapp.server.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,20 +36,16 @@ public class AuthController {
        return new HelloDto("Hi, friend. I am server");
     }
 
-    @PostMapping("/auth")
-    public AuthDto authenticate (@RequestBody LoginDto loginDto) {
+    @PostMapping("/login")
+    public AuthDto authenticate(@RequestBody LoginDto loginDto) {
         if (authenticationService.isAuthenticated()){
             Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
-            return new AuthDto(authenticationService.getRoleFromAuth(
-                authentication),
-                userService.findUserByUsername(loginDto.getUsername()).getId());
+            return new AuthDto(userService.findUserByUsername(loginDto.getUsername()).getId());
         }
         if(userService.findUserByUsername(loginDto.getUsername())==null){
-            return new AuthDto("Unauthorized",null);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Пользователь не найден в системе");
         }
-        return new AuthDto(authenticationService.getRoleFromAuth(
-            securityService.authenticate(loginDto)),
-            userService.findUserByUsername(loginDto.getUsername()).getId());
+        return new AuthDto(userService.findUserByUsername(loginDto.getUsername()).getId());
     }
 
     @PostMapping("/registration")

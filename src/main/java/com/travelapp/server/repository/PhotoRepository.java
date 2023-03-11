@@ -1,13 +1,13 @@
 package com.travelapp.server.repository;
 
-import com.travelapp.server.entity.Role;
+import com.travelapp.server.entity.Photo;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
-    @Nullable
-    Role findByName(Role.RoleName name);
+    Optional<Photo> findByKey(Long userId);
 }

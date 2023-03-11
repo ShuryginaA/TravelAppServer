@@ -7,5 +7,4 @@ public interface SecurityService {
 
     Authentication authenticate(LoginDto loginDto);
 
-
 }

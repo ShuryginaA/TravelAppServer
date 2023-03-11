@@ -1,8 +1,11 @@
 package com.travelapp.server.service;
 
+import com.travelapp.server.dto.UserRequestDto;
+import com.travelapp.server.dto.UserDataResponseDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -23,4 +26,8 @@ public interface UserService {
     void saveRole(Role role);
 
     Role findUserRoleByUsername(String username);
+
+    UserDataResponseDto findUserById(UserRequestDto dto);
+
+    MultipartFile findUserPhotoByKey(UserRequestDto dto);
 }

@@ -37,7 +37,8 @@ public class StartupDataInitializer implements ApplicationListener<ContextRefres
 
         User admin = new User(ADMIN_USERNAME,
                 "admin",
-                "admin@mail.ru"
+                "admin@mail.ru",
+            null
         );
         admin.setRole(adminRole);
         admin.setEnabled(true);

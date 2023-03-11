@@ -1,22 +1,27 @@
 package com.travelapp.server.service.impl;
 
+import com.travelapp.server.dto.UserRequestDto;
+import com.travelapp.server.dto.UserDataResponseDto;
+import com.travelapp.server.entity.Photo;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
+import com.travelapp.server.mapper.UserMapper;
 import com.travelapp.server.repository.RoleRepository;
+import com.travelapp.server.repository.PhotoRepository;
 import com.travelapp.server.repository.UserRepository;
 import com.travelapp.server.service.UserService;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.factory.Mappers;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
@@ -26,6 +31,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
 
     private final RoleRepository roleRepository;
+
+    private final PhotoRepository photoRepository;
+
+    private final UserMapper userMapper;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -115,5 +124,23 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return user.getRole();
         }
         throw new UsernameNotFoundException("No such user");
+    }
+
+    @Override
+    public UserDataResponseDto findUserById(UserRequestDto dto) {
+        Optional<User> user = userRepository.findById(dto.getUserId());
+        if (user.isPresent()) {
+            return userMapper.userResponseDto(user.get());
+        }
+        throw new UsernameNotFoundException("No such user");
+    }
+
+    @Override
+    public MultipartFile findUserPhotoByKey(UserRequestDto dto) {
+//        Optional<Photo> photo = photoRepository.findByKey(dto.getUserId());
+//        if (photo.isPresent()) {
+//            return
+//        }
+        return null;
     }
 }

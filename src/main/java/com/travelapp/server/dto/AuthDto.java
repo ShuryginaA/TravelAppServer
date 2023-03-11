@@ -9,7 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthDto {
 
-    private String roleName;
-
-    private Long id;
+    private Long userId;
 }
