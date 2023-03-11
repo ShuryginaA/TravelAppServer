@@ -5,6 +5,7 @@ import com.travelapp.server.dto.UserDataResponseDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
+import javax.ws.rs.core.Response;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
@@ -29,5 +30,5 @@ public interface UserService {
 
     UserDataResponseDto findUserById(UserRequestDto dto);
 
-    MultipartFile findUserPhotoByKey(UserRequestDto dto);
+    Response findUserPhotoByKey(UserRequestDto dto);
 }

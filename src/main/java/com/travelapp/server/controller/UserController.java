@@ -3,6 +3,9 @@ package com.travelapp.server.controller;
 import com.travelapp.server.dto.UserRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
 import com.travelapp.server.service.UserService;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +25,9 @@ public class UserController {
         return userService.findUserById(dto);
     }
 
-    @GetMapping("/photo")
-    public MultipartFile getUserPhoto(@RequestBody UserRequestDto dto) {
+    @GetMapping(value = "/photo")
+    @Produces(value = MediaType.APPLICATION_OCTET_STREAM)
+    public Response getUserPhoto(@RequestBody UserRequestDto dto) {
         return userService.findUserPhotoByKey(dto);
     }
 }

@@ -1,27 +1,30 @@
 package com.travelapp.server.service.impl;
 
-import com.travelapp.server.dto.UserRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
+import com.travelapp.server.dto.UserRequestDto;
 import com.travelapp.server.entity.Photo;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
 import com.travelapp.server.mapper.UserMapper;
-import com.travelapp.server.repository.RoleRepository;
 import com.travelapp.server.repository.PhotoRepository;
+import com.travelapp.server.repository.RoleRepository;
 import com.travelapp.server.repository.UserRepository;
 import com.travelapp.server.service.UserService;
+import java.io.File;
 import java.util.Optional;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapstruct.factory.Mappers;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -54,10 +57,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("processing user: " + user.getUsername());
         if (anotherUser == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            Long i=userRepository.save(user).getId();
+            Long i = userRepository.save(user).getId();
             return i;
         }
-            throw new AuthenticationException();
+        throw new AuthenticationException();
     }
 
     @Override
@@ -136,11 +139,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public MultipartFile findUserPhotoByKey(UserRequestDto dto) {
-//        Optional<Photo> photo = photoRepository.findByKey(dto.getUserId());
-//        if (photo.isPresent()) {
-//            return
-//        }
-        return null;
+    public Response findUserPhotoByKey(UserRequestDto dto) {
+//        String photoKey = userRepository.findById(dto.getUserId())
+//            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Пользователь не найден"))
+//            .getProfilePhotoKey();
+        File file = new File("src/main/resources/photos/" + "profile" + ".jpg");
+        return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
+            .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"") //optional
+            .build();
     }
 }

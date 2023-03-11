@@ -39,6 +39,9 @@ public class User implements UserDetails {
     @NotNull
     private String email;
 
+    @NotNull
+    private String phone;
+
     private String profilePhotoKey;
 
     private boolean enabled = true;
@@ -48,7 +51,7 @@ public class User implements UserDetails {
     @JoinColumn(name="role_id")
     private Role role;
 
-    public User(String username, String password, String email, String profilePhotoKey) {
+    public User(String username, String password, String email, String profilePhotoKey, String phone) {
         this.username = username;
         this.password = password;
         this.email = email;
