@@ -25,9 +25,11 @@ public class RegistrationDto {
     @NotEmpty
     private String email;
 
+    @NotNull
+    @NotEmpty
+    private String phone;
+
     public User toUser() {
-        User user = new User(username, password, email);
-        user.setPassword(password);
-        return user;
+        return new User(username, password, email, phone);
     }
 }

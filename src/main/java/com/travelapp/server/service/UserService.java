@@ -28,7 +28,7 @@ public interface UserService {
 
     Role findUserRoleByUsername(String username);
 
-    UserDataResponseDto findUserById(UserRequestDto dto);
+    UserDataResponseDto findUserById(Long id);
 
     Response findUserPhotoByKey(UserRequestDto dto);
 }

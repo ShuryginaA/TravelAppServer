@@ -130,8 +130,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UserDataResponseDto findUserById(UserRequestDto dto) {
-        Optional<User> user = userRepository.findById(dto.getUserId());
+    public UserDataResponseDto findUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             return userMapper.userResponseDto(user.get());
         }

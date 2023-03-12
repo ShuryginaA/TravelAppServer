@@ -55,7 +55,9 @@ public class AuthController {
         user.setRole(userService.findRoleByName(Role.RoleName.USER));
 //        String unhashedPassword = user.getPassword();
 //        authenticationService.autoLogin(user.getUsername(), unhashedPassword);
-         return new RegistrationResponseDto(userService.saveUser(user));
+         RegistrationResponseDto d = new RegistrationResponseDto(userService.saveUser(user));
+         return d;
+//         return new RegistrationResponseDto(userService.saveUser(user));
 
     }
     @GetMapping("/logout")
