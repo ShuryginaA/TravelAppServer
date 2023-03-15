@@ -1,18 +1,19 @@
 package com.travelapp.server.service;
 
+import com.travelapp.server.dto.UserUpdateRequestDto;
 import com.travelapp.server.dto.UserRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
+import com.travelapp.server.dto.UserUpdateResposeDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
 import javax.ws.rs.core.Response;
-import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
     Long saveUser(User user) throws AuthenticationException;
 
-    void updateUser(User user);
+    UserUpdateResposeDto updateUser(Long id, UserUpdateRequestDto userRequestDto);
 
     User findUserByUsername(String username);
 

@@ -1,8 +1,9 @@
 package com.travelapp.server.service.impl;
 
+import com.travelapp.server.dto.UserUpdateRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
 import com.travelapp.server.dto.UserRequestDto;
-import com.travelapp.server.entity.Photo;
+import com.travelapp.server.dto.UserUpdateResposeDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
@@ -13,18 +14,17 @@ import com.travelapp.server.repository.UserRepository;
 import com.travelapp.server.service.UserService;
 import java.io.File;
 import java.util.Optional;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -64,14 +64,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void updateUser(User user) {
-        User oldUser = userRepository.findByUsername(user.getUsername());
-        if (oldUser == null) {
-            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        } else {
-            user.setId(oldUser.getId());
-        }
-        userRepository.save(user);
+    @Transactional
+    public UserUpdateResposeDto updateUser(Long id, UserUpdateRequestDto userRequestDto) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            throw new NotFoundException("Пользователь не найден"); }
+        userMapper.updateUser(userRequestDto, user.get());
+        return userMapper.toUserUpdateResponseDto(userRepository.save(user.get()));
     }
 
     @Override
@@ -133,7 +132,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public UserDataResponseDto findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            return userMapper.userResponseDto(user.get());
+            return userMapper.toUserResponseDto(user.get());
         }
         throw new UsernameNotFoundException("No such user");
     }
