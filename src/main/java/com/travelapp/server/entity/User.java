@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
@@ -49,6 +50,9 @@ public class User implements UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="role_id")
     private Role role;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    private List<Tour> tours;
 
     public User(String username, String password, String email, String profilePhotoKey, String phone) {
         this.username = username;
