@@ -8,4 +8,6 @@ import org.mapstruct.Mapper;
 public interface TourMapper {
 
     Tour toEntity(TourRequestDto dto);
+
+    Tour toResponseDto(Tour tour);
 }

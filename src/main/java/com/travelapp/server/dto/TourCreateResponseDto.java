@@ -7,5 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TourResponseDto {
+public class TourCreateResponseDto {
+
+    private Long tourId;
 }

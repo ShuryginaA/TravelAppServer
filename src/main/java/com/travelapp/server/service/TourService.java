@@ -1,12 +1,14 @@
 package com.travelapp.server.service;
 
 import com.travelapp.server.dto.TourRequestDto;
+import com.travelapp.server.dto.TourCreateResponseDto;
 import com.travelapp.server.dto.TourResponseDto;
-import com.travelapp.server.entity.Tour;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 
 public interface TourService {
 
-    TourResponseDto saveTour(TourRequestDto dto);
+    TourCreateResponseDto saveTour(TourRequestDto dto);
+
+    List<TourResponseDto> findAll();
 }
