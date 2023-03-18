@@ -57,8 +57,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.info("processing user: " + user.getUsername());
         if (anotherUser == null) {
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            Long i = userRepository.save(user).getId();
-            return i;
+            return userRepository.save(user).getId();
         }
         throw new AuthenticationException();
     }

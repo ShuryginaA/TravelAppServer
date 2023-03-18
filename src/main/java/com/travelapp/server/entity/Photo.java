@@ -13,13 +13,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity(name="photo")
+@Entity(name="photos")
 @NoArgsConstructor
 public class Photo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
+    @Column(name="photo_id")
     private Long id;
 
     @NotNull
