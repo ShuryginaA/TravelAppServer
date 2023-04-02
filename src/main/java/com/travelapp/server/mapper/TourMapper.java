@@ -1,7 +1,7 @@
 package com.travelapp.server.mapper;
 
 import com.travelapp.server.dto.TourRequestDto;
-import com.travelapp.server.dto.TourResponseDto;
+import com.travelapp.server.dto.TourResponseData;
 import com.travelapp.server.entity.Tour;
 import org.mapstruct.Mapper;
 
@@ -10,5 +10,5 @@ public interface TourMapper {
 
     Tour toEntity(TourRequestDto dto);
 
-    TourResponseDto toResponseDto(Tour tour);
+    TourResponseData toResponseDto(Tour entity);
 }

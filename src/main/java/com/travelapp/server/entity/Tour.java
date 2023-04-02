@@ -66,6 +66,8 @@ public class Tour {
 
     private String summary;
 
+    private Boolean popularNow = false;
+
     @Enumerated(EnumType.STRING)
     private FoodService foodService;
 

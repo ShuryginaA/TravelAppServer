@@ -20,8 +20,4 @@ public class HotelResponseDto {
     private String summary;
 
     private int stars;
-
-    private HotelResponseDto hotel;
-
-    private RoomResponseDto room;
 }
