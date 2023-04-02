@@ -16,7 +16,9 @@ import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -60,5 +62,15 @@ public class TourServiceImpl implements TourService {
             .filter(Tour::getPopularNow)
             .map(tourMapper::toResponseDto)
             .toList();
+    }
+
+    @Override
+    public TourResponseData getById(Long id) {
+        Optional<Tour> tour =tourRepository.findById(id);
+        if(tour.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return tourMapper.toResponseDto(tour.get());
+
     }
 }

@@ -13,4 +13,6 @@ public interface TourService {
     List<TourResponseData> findAll();
 
     List<TourResponseData> getPopularTours();
+
+    TourResponseData getById(Long id);
 }
