@@ -40,6 +40,11 @@
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
 		<!--Hibernate implementation of the Validation API-->
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
