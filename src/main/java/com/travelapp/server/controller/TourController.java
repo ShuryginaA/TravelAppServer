@@ -63,7 +63,9 @@ public class TourController {
         InputStream in = getClass()
             .getResourceAsStream("/photos/" + key);
         if(in==null){
-            throw new RuntimeException("Could not read the file!");
+            InputStream inDef = getClass()
+                .getResourceAsStream("/photos/nn.jpg");
+            return org.apache.commons.io.IOUtils.toByteArray(inDef);
         }
         return org.apache.commons.io.IOUtils.toByteArray(in);
     }
