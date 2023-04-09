@@ -1,5 +1,6 @@
 package com.travelapp.server.controller;
 
+import com.travelapp.server.dto.SearchQueryParamsDto;
 import com.travelapp.server.dto.TourRequestDto;
 import com.travelapp.server.dto.TourCreateResponseDto;
 import com.travelapp.server.dto.TourResponseData;
@@ -54,19 +55,15 @@ public class TourController {
         return tourService.getById(id);
     }
 
-    @GetMapping(
-        value = "/image/{key}",
-        produces = org.springframework.http.MediaType.IMAGE_JPEG_VALUE
-    )
-    public @ResponseBody
-    byte[] getImageWithMediaType(@PathVariable String key) throws IOException {
-        InputStream in = getClass()
-            .getResourceAsStream("/photos/" + key);
-        if(in==null){
-            InputStream inDef = getClass()
-                .getResourceAsStream("/photos/nn.jpg");
-            return org.apache.commons.io.IOUtils.toByteArray(inDef);
-        }
-        return org.apache.commons.io.IOUtils.toByteArray(in);
+    @GetMapping(value = "/image/{key}",
+                produces = org.springframework.http.MediaType.IMAGE_JPEG_VALUE)
+    public @ResponseBody byte[] getImageWithMediaType(@PathVariable String key) throws IOException {
+        return tourService.getImageWithMediaType(key);
+    }
+
+    @PostMapping(value = "/search",
+        produces = MediaType.APPLICATION_JSON)
+    public TourResponseDto getToursBySearchParams(@RequestBody SearchQueryParamsDto dto) {
+        return new TourResponseDto(tourService.getByParams(dto));
     }
 }

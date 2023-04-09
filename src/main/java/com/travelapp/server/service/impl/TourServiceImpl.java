@@ -1,5 +1,6 @@
 package com.travelapp.server.service.impl;
 
+import com.travelapp.server.dto.SearchQueryParamsDto;
 import com.travelapp.server.dto.TourCreateResponseDto;
 import com.travelapp.server.dto.TourRequestDto;
 import com.travelapp.server.dto.TourResponseData;
@@ -11,6 +12,8 @@ import com.travelapp.server.repository.HotelRepository;
 import com.travelapp.server.repository.RoomRepository;
 import com.travelapp.server.repository.TourRepository;
 import com.travelapp.server.service.TourService;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.NotFoundException;
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
@@ -72,5 +76,23 @@ public class TourServiceImpl implements TourService {
         }
         return tourMapper.toResponseDto(tour.get());
 
+    }
+
+    @Override
+    public List<TourResponseData> getByParams(SearchQueryParamsDto paramsDto) {
+        return tourRepository.findAllByDepartureCity(paramsDto.getDepartureCity())
+            .stream().filter(t -> t.getStartDate().equals(paramsDto.getSearchStartDate())
+                || t.getStartDate().isAfter(paramsDto.getSearchStartDate()))
+            .map(tourMapper::toResponseDto).toList();
+    }
+
+    public @ResponseBody byte[] getImageWithMediaType(String key) throws IOException {
+        InputStream in = getClass().getResourceAsStream("/photos/" + key);
+        if(in==null){
+            InputStream inDef = getClass()
+                .getResourceAsStream("/photos/nn.jpg");
+            return org.apache.commons.io.IOUtils.toByteArray(inDef);
+        }
+        return org.apache.commons.io.IOUtils.toByteArray(in);
     }
 }
