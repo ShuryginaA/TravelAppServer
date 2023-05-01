@@ -64,9 +64,12 @@ public class Tour {
 
     private String mainPhotoKey;
 
+    @Column(columnDefinition="TEXT")
     private String summary;
 
     private Boolean popularNow = false;
+
+    private Boolean isBooked = false;
 
     @Enumerated(EnumType.STRING)
     private FoodService foodService;

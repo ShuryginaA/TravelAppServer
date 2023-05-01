@@ -1,5 +1,6 @@
 package com.travelapp.server.service.impl;
 
+import com.travelapp.server.dto.TourResponseData;
 import com.travelapp.server.dto.UserUpdateRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
 import com.travelapp.server.dto.UserRequestDto;
@@ -7,12 +8,14 @@ import com.travelapp.server.dto.UserUpdateResposeDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
+import com.travelapp.server.mapper.TourMapper;
 import com.travelapp.server.mapper.UserMapper;
 import com.travelapp.server.repository.PhotoRepository;
 import com.travelapp.server.repository.RoleRepository;
 import com.travelapp.server.repository.UserRepository;
 import com.travelapp.server.service.UserService;
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.MediaType;
@@ -38,6 +41,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PhotoRepository photoRepository;
 
     private final UserMapper userMapper;
+
+    private final TourMapper tourMapper;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -119,15 +124,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Role findUserRoleByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            return user.getRole();
-        }
-        throw new UsernameNotFoundException("No such user");
-    }
-
-    @Override
     public UserDataResponseDto findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
@@ -145,5 +141,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return Response.ok(file, MediaType.APPLICATION_OCTET_STREAM)
             .header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"") //optional
             .build();
+    }
+
+    @Override
+    public List<TourResponseData> getUserTours(Long userId) {
+        return userRepository.findById(userId).orElseThrow(NotFoundException::new).getTours()
+            .stream().map(tourMapper::toResponseDto).toList();
     }
 }

@@ -11,6 +11,8 @@ import com.travelapp.server.exception.AuthenticationException;
 import com.travelapp.server.service.AuthenticationService;
 import com.travelapp.server.service.SecurityService;
 import com.travelapp.server.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@Tag(name = "Безопасность", description = "Операции регистрации, авторизации и выхода из системы")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -32,11 +35,13 @@ public class AuthController {
     private final SecurityService securityService;
 
     @GetMapping("/hello")
+    @Operation(summary =  "Проверочный эндпойнт")
     public HelloDto hello() {
        return new HelloDto("Hi, friend. I am server");
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Вход в систему")
     public AuthDto authenticate(@RequestBody LoginDto loginDto) {
         if (authenticationService.isAuthenticated()){
             Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
@@ -49,16 +54,16 @@ public class AuthController {
     }
 
     @PostMapping("/registration")
+    @Operation(summary = "Регистрация")
     public RegistrationResponseDto processRegistration(@RequestBody RegistrationDto registrationDto)
         throws AuthenticationException {
         User user = registrationDto.toUser();
         user.setRole(userService.findRoleByName(Role.RoleName.USER));
-//        String unhashedPassword = user.getPassword();
-//        authenticationService.autoLogin(user.getUsername(), unhashedPassword);
          return new RegistrationResponseDto(userService.saveUser(user));
 
     }
     @GetMapping("/logout")
+    @Operation(summary = "Выход из системы")
     public String logout() {
         if (authenticationService.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(null);

@@ -1,5 +1,6 @@
 package com.travelapp.server.service;
 
+import com.travelapp.server.dto.TourResponseData;
 import com.travelapp.server.dto.UserUpdateRequestDto;
 import com.travelapp.server.dto.UserRequestDto;
 import com.travelapp.server.dto.UserDataResponseDto;
@@ -7,6 +8,7 @@ import com.travelapp.server.dto.UserUpdateResposeDto;
 import com.travelapp.server.entity.Role;
 import com.travelapp.server.entity.User;
 import com.travelapp.server.exception.AuthenticationException;
+import java.util.List;
 import javax.ws.rs.core.Response;
 
 public interface UserService {
@@ -27,9 +29,10 @@ public interface UserService {
 
     void saveRole(Role role);
 
-    Role findUserRoleByUsername(String username);
-
     UserDataResponseDto findUserById(Long id);
 
     Response findUserPhotoByKey(UserRequestDto dto);
+
+    List<TourResponseData> getUserTours(Long userId);
+
 }

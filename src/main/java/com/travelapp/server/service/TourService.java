@@ -1,6 +1,8 @@
 package com.travelapp.server.service;
 
+import com.travelapp.server.dto.BookTourDto;
 import com.travelapp.server.dto.SearchQueryParamsDto;
+import com.travelapp.server.dto.TourIdResponseDto;
 import com.travelapp.server.dto.TourRequestDto;
 import com.travelapp.server.dto.TourCreateResponseDto;
 import com.travelapp.server.dto.TourResponseData;
@@ -21,5 +23,7 @@ public interface TourService {
     List<TourResponseData> getByParams(SearchQueryParamsDto paramsDto);
 
     byte[] getImageWithMediaType(String key) throws IOException;
+
+    TourIdResponseDto bookTour(Long userId, BookTourDto tourDto);
 
 }
