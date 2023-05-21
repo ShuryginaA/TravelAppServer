@@ -21,6 +21,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
+    @Bean
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
@@ -32,7 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.
             authorizeRequests()
             .antMatchers("/admin").hasAuthority("ADMIN")
-            .antMatchers("/hello").anonymous()
+            .antMatchers("/login").anonymous()
+            .anyRequest()
+            .authenticated()
             .and()
             .httpBasic()
             .and()
@@ -61,11 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
         String hierarchy = "ADMIN > USER";
@@ -75,7 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public DefaultWebSecurityExpressionHandler customWebSecurityExpressionHandler() {
-        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        DefaultWebSecurityExpressionHandler expressionHandler
+                = new DefaultWebSecurityExpressionHandler();
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
     }

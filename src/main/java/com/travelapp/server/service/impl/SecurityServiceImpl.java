@@ -19,19 +19,16 @@ public class SecurityServiceImpl implements SecurityService {
 	@Autowired
 	AuthenticationManager authenticationManager;
 
-
+    @Override
 	public Authentication authenticate(LoginDto loginDto) {
-
 		UsernamePasswordAuthenticationToken authRequest =
 				new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
 		Authentication result = authenticationManager.authenticate(authRequest);
-
 		if(result == null) {
 			return null;
 		}
 		SecurityContextHolder.getContext().setAuthentication(result);
 		return result;
-
 	}
 
 }

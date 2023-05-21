@@ -44,9 +44,9 @@ public class AuthController {
     @Operation(summary = "Вход в систему")
     public AuthDto authenticate(@RequestBody LoginDto loginDto) {
         if (authenticationService.isAuthenticated()){
-            Authentication authentication= SecurityContextHolder.getContext().getAuthentication();
             return new AuthDto(userService.findUserByUsername(loginDto.getUsername()).getId());
         }
+        securityService.authenticate(loginDto);
         if(userService.findUserByUsername(loginDto.getUsername())==null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Пользователь не найден в системе");
         }
